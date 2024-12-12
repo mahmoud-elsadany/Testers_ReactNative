@@ -11,6 +11,7 @@ import {
 
 import strings from '../constants/strings';
 import ApiService from '../services/ApiService';
+import LocalStorageService from '../services/LocalStorageService';
 
 
 const LoginScreen: React.FC = () => {
@@ -32,9 +33,11 @@ const LoginScreen: React.FC = () => {
             const api = ApiService.getInstance();
             const response = await api.post('/login', { email, password });
 
-            console.debug("login_response",response)
+            // handle Save tokens
+            await LocalStorageService.saveTokens(response.access_token, response.refresh_token);
 
-            //   handleSaveTheAccessToken
+            //  jdouglas@example.com
+            //  123123
 
             Alert.alert('Success', `Welcome, ${email}`);
         } catch (error: any) {
