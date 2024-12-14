@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -9,17 +9,28 @@ import {
     Image,
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native'; 
 import strings from '../constants/strings';
 import ApiService from '../services/ApiService';
 import LocalStorageService from '../services/LocalStorageService';
 
 
 const LoginScreen: React.FC = () => {
+    const navigation = useNavigation(); // Access navigation
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+     useEffect(() => {
+        const checkAccessToken = async () => {
+            const token = await LocalStorageService.getAccessToken();
+            if (token) {
+                navigation.navigate('List'); 
+            }
+        };
+        checkAccessToken();
+    }, []);
 
     const handleLogin = async (): Promise<void> => {
         if (email.trim() === '' || password.trim() === '') {
@@ -39,7 +50,9 @@ const LoginScreen: React.FC = () => {
             //  jdouglas@example.com
             //  123123
 
-            Alert.alert('Success', `Welcome, ${email}`);
+             // Navigate to the list screen after login
+             navigation.navigate('List');
+
         } catch (error: any) {
             Alert.alert('Login Failed', error.response?.data?.message || error.message);
         } finally {

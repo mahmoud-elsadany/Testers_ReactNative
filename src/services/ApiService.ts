@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import LocalStorageService from '../services/LocalStorageService';
 
 export default class ApiService {
     private static instance: ApiService;
@@ -6,6 +7,7 @@ export default class ApiService {
 
     private constructor() {
         this.baseURL = 'https://app.rel2.stgrapidusertests.com/api/tester';
+
     }
 
     public static getInstance(): ApiService {
@@ -28,6 +30,8 @@ export default class ApiService {
             console.log(`API Request - ${method} ${url}`);
             console.log('Request Data:', data);
             console.log('Request Config:', config);
+
+
             const response: AxiosResponse<T> = await axios({
                 method,
                 url: `${this.baseURL}${endpoint}`,

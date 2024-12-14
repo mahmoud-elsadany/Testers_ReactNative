@@ -4,7 +4,7 @@ class LocalStorageService {
   private static accessTokenKey = 'access_token';
   private static refreshTokenKey = 'refresh_token';
 
-  // Save tokens
+
   static async saveTokens(accessToken: string, refreshToken: string): Promise<void> {
     try {
       await AsyncStorage.setItem(this.accessTokenKey, accessToken);
@@ -15,7 +15,6 @@ class LocalStorageService {
     }
   }
 
-  // Get access token
   static async getAccessToken(): Promise<string | null> {
     try {
       const token = await AsyncStorage.getItem(this.accessTokenKey);
@@ -27,7 +26,6 @@ class LocalStorageService {
     }
   }
 
-  // Get refresh token
   static async getRefreshToken(): Promise<string | null> {
     try {
       const token = await AsyncStorage.getItem(this.refreshTokenKey);
@@ -39,7 +37,7 @@ class LocalStorageService {
     }
   }
 
-  // Clear tokens
+
   static async clearTokens(): Promise<void> {
     try {
       await AsyncStorage.removeItem(this.accessTokenKey);
