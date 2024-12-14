@@ -9,6 +9,9 @@ import {
     Image,
 } from 'react-native';
 
+
+
+
 import { useNavigation } from '@react-navigation/native'; 
 import strings from '../constants/strings';
 import ApiService from '../services/ApiService';
@@ -46,9 +49,6 @@ const LoginScreen: React.FC = () => {
 
             // handle Save tokens
             await LocalStorageService.saveTokens(response.access_token, response.refresh_token);
-
-            //  jdouglas@example.com
-            //  123123
 
              // Navigate to the list screen after login
              navigation.navigate('List');
@@ -105,6 +105,7 @@ const LoginScreen: React.FC = () => {
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
