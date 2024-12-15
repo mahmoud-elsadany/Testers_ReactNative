@@ -1,44 +1,108 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Application README
 
-# Getting Started
+## Overview
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+This application is designed to manage tests in a categorized manner, with a login flow and a tests list screen divided into moderated and unmoderated tests. This document will guide you on how to set up, run, and explore the app on any machine.
 
-## Step 1: Start the Metro Server
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+---
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Application Flow Screenshots
+
+### 1. Login Screen
+
+![Login Screen](./z1Loginscreenshot.png)
+
+### 2. Login Screen - Error State
+
+![Error State](./z2LoginErrorScreenshot.png)
+
+### 3. Login Screen - Loading State
+
+![Loading State](./z3LoginVisibleLoadingScreenshot.png)
+
+### 4. Tests List Screen
+
+![Tests list screen](./z4ListOftestscreenshot.png)
+
+### 5. Logout Confirmation
+
+![Logout Confirmation](./z5Logoutscreenshot.png)
+
+---
+
+
+## Steps to Set Up and Run the Application
+
+### 1. Clone the Repository
 
 ```bash
-# using npm
-npm start
+git clone https://github.com/mahmoud-elsadany/Testers_ReactNative.git
+```
 
-# OR using Yarn
+### 2. Install Dependencies
+
+Ensure you have Node.js installed, then run:
+
+```bash
+npm install
+```
+
+Or, if you use Yarn:
+
+```bash
+yarn install
+```
+
+### 3. Configure the Environment
+
+- Create an `.env` file in the root directory if environment variables are needed.
+- Add API base URL and other configurations:
+  ```
+  API_BASE_URL=https://app.rel2.stgrapidusertests.com/api/tester
+  ```
+
+### 4. Set Up the Emulator or Device
+
+#### For Android:
+
+- Open Android Studio and launch an Android Virtual Device (AVD).
+- Alternatively, connect a physical Android device with USB debugging enabled.
+
+#### For iOS (macOS only):
+
+- Open Xcode and launch an iOS Simulator.
+- Alternatively, connect a physical iPhone device.
+
+### 5. Start the Metro Bundler
+
+```bash
+npm start
+```
+
+Or:
+
+```bash
 yarn start
 ```
 
-## Step 2: Start your Application
+### 6. Run the Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
+#### For Android:
 
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+npx react-native run-android
 ```
 
-### For iOS
+#### For iOS (macOS only):
 
 ```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npx react-native run-ios
 ```
+
+---
+
+## Support
+
+For further assistance, contact [mahmoud-elsadany@hotmail.com](mailto\:mahmoud-elsadany@hotmail.com).
 
