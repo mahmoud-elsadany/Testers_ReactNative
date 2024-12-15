@@ -10,6 +10,7 @@ const strings = {
     },
     testsList:{
       title: 'List of Tests',
+      search:'Search the tests ...',
       messagelogout: 'Are you sure you want to logout?',
       cancel: 'cancel',
       logout: 'logout',

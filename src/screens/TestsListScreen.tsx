@@ -8,20 +8,21 @@ import {
     Alert,
     SafeAreaView,
     ActivityIndicator,
+    TextInput,
 } from 'react-native';
-
-
 
 import strings from '../constants/strings';
 import { useNavigation } from '@react-navigation/native';
 import ApiService from '../services/ApiService';
 import LocalStorageService from '../services/LocalStorageService';
 
-
 const TestsListScreen: React.FC = () => {
     const navigation = useNavigation();
     const [moderatedTests, setModeratedTests] = useState([]);
     const [unmoderatedTests, setUnmoderatedTests] = useState([]);
+    const [filteredModeratedTests, setFilteredModeratedTests] = useState([]);
+    const [filteredUnmoderatedTests, setFilteredUnmoderatedTests] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const TestsListScreen: React.FC = () => {
                 const api = ApiService.getInstance();
                 const response = await api.get('/tests', {
                     headers: {
-                        Authorization: `Bearer ${token}`, 
+                        Authorization: `Bearer ${token}`,
                     },
                 });
 
@@ -40,6 +41,8 @@ const TestsListScreen: React.FC = () => {
 
                 setModeratedTests(response.data.mod_rut_tests || []);
                 setUnmoderatedTests(response.data.standard_tests || []);
+                setFilteredModeratedTests(response.data.mod_rut_tests || []);
+                setFilteredUnmoderatedTests(response.data.standard_tests || []);
             } catch (error: any) {
                 Alert.alert('Failed to Fetch Tests', error.response?.data?.message || error.message);
             } finally {
@@ -60,17 +63,36 @@ const TestsListScreen: React.FC = () => {
                 text: strings.testsList.logout,
                 onPress: () => {
                     LocalStorageService.clearTokens();
-                
                     navigation.navigate('Login');
                 },
             },
         ]);
     };
 
-    
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+
+        if (!query) {
+            setFilteredModeratedTests(moderatedTests);
+            setFilteredUnmoderatedTests(unmoderatedTests);
+            return;
+        }
+
+        const filteredModerated = moderatedTests.filter((test) =>
+            test.test_type.toLowerCase().includes(query.toLowerCase()) ||
+            test.device_name.toLowerCase().includes(query.toLowerCase())
+        );
+        const filteredUnmoderated = unmoderatedTests.filter((test) =>
+            test.test_type.toLowerCase().includes(query.toLowerCase()) ||
+            test.device_name.toLowerCase().includes(query.toLowerCase())
+        );
+
+        setFilteredModeratedTests(filteredModerated);
+        setFilteredUnmoderatedTests(filteredUnmoderated);
+    };
+
     const renderTestItem = ({ item }) => (
         <View style={styles.testCard}>
-            <Text style={styles.testType}>Test Type: {item.test_type}</Text>
             <Text>{strings.testsList.device}: {item.device_name}</Text>
             <Text>{strings.testsList.duration}: {item.testDuration} mins</Text>
             <Text>{strings.testsList.fee}: ${item.fee}</Text>
@@ -105,11 +127,18 @@ const TestsListScreen: React.FC = () => {
                 </TouchableOpacity>
             </View>
 
+            <TextInput
+                style={styles.searchInput}
+                placeholder={strings.testsList.search}
+                value={searchQuery}
+                onChangeText={handleSearch}
+            />
+
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{strings.testsList.ModeratedTests}</Text>
-                {moderatedTests.length > 0 ? (
+                {filteredModeratedTests.length > 0 ? (
                     <FlatList
-                        data={moderatedTests}
+                        data={filteredModeratedTests}
                         keyExtractor={(item, index) => `mod-${index}`}
                         renderItem={renderTestItem}
                     />
@@ -118,12 +147,11 @@ const TestsListScreen: React.FC = () => {
                 )}
             </View>
 
-            {/* Unmoderated Tests */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{strings.testsList.UnModeratedTests}</Text>
-                {unmoderatedTests.length > 0 ? (
+                {filteredUnmoderatedTests.length > 0 ? (
                     <FlatList
-                        data={unmoderatedTests}
+                        data={filteredUnmoderatedTests}
                         keyExtractor={(item, index) => `unmod-${index}`}
                         renderItem={renderTestItem}
                     />
@@ -200,6 +228,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    searchInput: {
+        height: 50,
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginHorizontal: 10,
+        marginBottom: 5,
+        marginTop:10,
+        backgroundColor: '#fff',
     },
 });
 
